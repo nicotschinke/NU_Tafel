@@ -11,18 +11,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="authoring-tool" content="Adobe_Animate_CC">
-	<link rel="preload" href="/NU_Tafel/images/NU_atlas_1.webp" as="image" fetchpriority="high">
-	<link rel="preload" href="/NU_Tafel/images/EW_atlas_1.webp" as="image" fetchpriority="high">
-	<link rel="preload" href="/NU_Tafel/images/EW_atlas_2.webp" as="image" fetchpriority="high">
-  	<link rel="preload" href="/NU_Tafel/images/EW_atlas_3.webp" as="image" fetchpriority="high">
+
 <title>NU</title>
-<!-- write your code here -->
-<!-- Animate-Erzwingung für All-in-One-Export -->
-<!-- $EMBED_IMAGES -->
-<!-- $EMBED_LABELS -->
-<script src="createjs.min.js" defer></script>
 	
-	<script>
+	<link rel="preload" href="images/NU_atlas_1.webp" as="image" fetchpriority="high">
+	<link rel="preload" href="images/EW_atlas_1.webp" as="image" fetchpriority="high">
+	<link rel="preload" href="images/EW_atlas_2.webp" as="image" fetchpriority="high">
+  	<link rel="preload" href="images/EW_atlas_3.webp" as="image" fetchpriority="high">
+
+
+<script src="createjs.min.js" defer></script>
+</head>
+	<body>
+		 <canvas id="canvas"></canvas>
+		
+<script>
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
       navigator.serviceWorker.register("/NU_Tafel/service-worker.js");
@@ -30,14 +33,17 @@
   }
 </script>
 <script defer>
-	
-(function (cjs, an) {
-	const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    if (isMobile) {
-      cjs.Ticker.setFPS(24); // 24 FPS für Mobilgeräte
-    } else {
-      cjs.Ticker.setFPS(30); // 30 FPS für Desktop
-    }
+    document.addEventListener("DOMContentLoaded", function() {
+      const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      if (isMobile) {
+        createjs.Ticker.setFPS(24); // 24 FPS für Mobilgeräte
+      } else {
+        createjs.Ticker.setFPS(30); // 30 FPS für Desktop
+      }
+    });
+  </script>
+		
+<script defer>
 	
 var p; // shortcut to reference prototypes
 var lib={};var ss={};var img={};
