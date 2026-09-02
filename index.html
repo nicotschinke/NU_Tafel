@@ -32,6 +32,13 @@
       createjs.Ticker.setFPS(30); // 30 FPS für Desktop
     }
   </script>
+	<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/service-worker.js");
+    });
+  }
+</script>
 <script>
 (function (cjs, an) {
 var p; // shortcut to reference prototypes
