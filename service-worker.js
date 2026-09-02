@@ -1,9 +1,9 @@
-const CACHE_NAME = "NU_Tafel_v1";
+const CACHE_NAME = "NU_Tafel";
 const ASSETS_TO_CACHE = [
-  "/NU_atlas_1.webp",
-  "/EW_atlas_3.webp",
+  "/images/NU_atlas_1.webp",
+  "/images/EW_atlas_3.webp",
   "/createjs.min.js",
-  "/your-code.min.js"
+  "/index.html"
 ];
 
 self.addEventListener("install", (event) => {
