@@ -20,30 +20,24 @@
   	<link rel="preload" href="images/EW_atlas_3.webp" as="image" fetchpriority="high">
 
 
+
 <script src="createjs.min.js" defer></script>
+<script src="https://code.createjs.com/AdobeAn/AdobeAn_latest.min.js" defer></script>
+	
 </head>
 	<body>
 		 <canvas id="canvas"></canvas>
 		
-<script>
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("/NU_Tafel/service-worker.js");
-    });
-  }
-</script>
-<script defer>
-    document.addEventListener("DOMContentLoaded", function() {
-      const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-      if (isMobile) {
-        createjs.Ticker.setFPS(24); // 24 FPS für Mobilgeräte
-      } else {
-        createjs.Ticker.setFPS(30); // 30 FPS für Desktop
-      }
-    });
-  </script>
+
 		
 <script defer>
+
+const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      if (isMobile) {
+        cjs.Ticker.setFPS(24); // 24 FPS für Mobilgeräte
+      } else {
+        cjs.Ticker.setFPS(30); // 30 FPS für Desktop
+      }
 	
 var p; // shortcut to reference prototypes
 var lib={};var ss={};var img={};
@@ -19424,5 +19418,12 @@ function playSound(id, loop, offset) {
 		<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1920px; height:1080px; position: absolute; left: 0px; top: 0px; display: block;">
 		</div>
 	</div>
+	<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/NU_Tafel/service-worker.js");
+    });
+  }
+</script>
 </body>
 </html>
