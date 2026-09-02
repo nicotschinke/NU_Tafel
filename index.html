@@ -21,6 +21,17 @@
 <!-- $EMBED_IMAGES -->
 <!-- $EMBED_LABELS -->
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+	  <script>
+    // Prüfe, ob es sich um ein Mobilgerät handelt
+    const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    // Setze die Frame-Rate basierend auf dem Gerät
+    if (isMobile) {
+      createjs.Ticker.setFPS(24); // 24 FPS für Mobilgeräte
+    } else {
+      createjs.Ticker.setFPS(30); // 30 FPS für Desktop
+    }
+  </script>
 <script>
 (function (cjs, an) {
 var p; // shortcut to reference prototypes
