@@ -21,26 +21,24 @@
 <!-- $EMBED_IMAGES -->
 <!-- $EMBED_LABELS -->
 <script src="createjs.min.js" defer></script>
-	  <script>
-    // Prüfe, ob es sich um ein Mobilgerät handelt
-    const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-    // Setze die Frame-Rate basierend auf dem Gerät
-    if (isMobile) {
-      createjs.Ticker.setFPS(24); // 24 FPS für Mobilgeräte
-    } else {
-      createjs.Ticker.setFPS(30); // 30 FPS für Desktop
-    }
-  </script>
+	
 	<script>
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("/service-worker.js");
+      navigator.serviceWorker.register("service-worker.js");
     });
   }
 </script>
-<script>
+<script defer>
+	
 (function (cjs, an) {
+	const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (isMobile) {
+      cjs.Ticker.setFPS(24); // 24 FPS für Mobilgeräte
+    } else {
+      cjs.Ticker.setFPS(30); // 30 FPS für Desktop
+    }
+	
 var p; // shortcut to reference prototypes
 var lib={};var ss={};var img={};
 lib.ssMetadata = [
