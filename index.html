@@ -19347,7 +19347,7 @@ an.handleFilterCache = function(event) {
 		}
 	}
 }
-})(createjs, AdobeAn);
+})(window.createjs = window.createjs || {}, window.AdobeAn = window.AdobeAn || {});
 var createjs, AdobeAn;
 var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
 function init() {
