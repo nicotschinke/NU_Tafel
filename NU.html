@@ -11,42 +11,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="authoring-tool" content="Adobe_Animate_CC">
-
 <title>NU</title>
-	
-	<link rel="preload" href="images/NU_atlas_1.webp" as="image" fetchpriority="high">
-	<link rel="preload" href="images/EW_atlas_1.webp" as="image" fetchpriority="high">
-	<link rel="preload" href="images/EW_atlas_2.webp" as="image" fetchpriority="high">
-  	<link rel="preload" href="images/EW_atlas_3.webp" as="image" fetchpriority="high">
-
-
-
-<script src="createjs.min.js" defer></script>
-<script src="AdobeAn.js" defer></script>
-	
-	</head>
-<body>
-		 <canvas id="canvas"></canvas>
-		
-
-		
-<script defer>
-	document.addEventListener("DOMContentLoaded", function() {
-document.addEventListener("DOMContentLoaded", function() {
-      if (typeof createjs === "undefined" || typeof AdobeAn === "undefined") {
-        console.error("createjs oder AdobeAn ist nicht definiert!");
-        return;
-      }
-
-      // IIFE mit korrekten Parametern
-      (function (cjs, an) {
-        const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-        if (isMobile) {
-          cjs.Ticker.setFPS(24);
-        } else {
-          cjs.Ticker.setFPS(30);
-        }
-	
+<!-- write your code here -->
+<!-- Animate-Erzwingung für All-in-One-Export -->
+<!-- $EMBED_IMAGES -->
+<!-- $EMBED_LABELS -->
+<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+<script>
+(function (cjs, an) {
 var p; // shortcut to reference prototypes
 var lib={};var ss={};var img={};
 lib.ssMetadata = [
@@ -19266,7 +19238,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/NU_atlas_1.webp", id:"NU_atlas_1"},
+		{src:"images/NU_atlas_1.png", id:"NU_atlas_1"},
 		{src:"sounds/Klack.mp3", id:"Klack"}
 	],
 	preloads: []
@@ -19371,87 +19343,64 @@ an.handleFilterCache = function(event) {
 		}
 	}
 }
-
-
+})(createjs = createjs||{}, AdobeAn = AdobeAn||{});
+var createjs, AdobeAn;
 </script>
-<script defer>
-  document.addEventListener("DOMContentLoaded", function() {
-    // Prüfen, ob createjs und AdobeAn verfügbar sind
-    if (typeof createjs === "undefined" || typeof AdobeAn === "undefined") {
-      console.error("createjs oder AdobeAn ist nicht definiert!");
-      return;
-    }
-
-    // IIFE mit korrekten Parametern
-    (function (cjs, an) {
-      // Frame-Rate-Code
-      const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-      if (isMobile) {
-        cjs.Ticker.setFPS(24);
-      } else {
-        cjs.Ticker.setFPS(30);
-      }
-
-      // Rest des Adobe Animate-Codes (z. B. handleFilterCache, lib.ssMetadata, etc.)
-      an.handleFilterCache = function(event) {
-        if(!event.paused){
-          var target = event.target;
-          if(target){
-            if(target.filterCacheList){
-              for(var index = 0; index < target.filterCacheList.length; index++){
-                var cacheInst = target.filterCacheList[index];
-                if((cacheInst.startFrame <= target.currentFrame) && (target.currentFrame <= cacheInst.endFrame)){
-                  cacheInst.instance.cache(cacheInst.x, cacheInst.y, cacheInst.w, cacheInst.h);
-                }
-              }
-            }
-          }
-        }
-      };
-
-      // lib.ssMetadata (stellen Sie sicher, dass alle Arrays korrekt geschlossen sind!)
-      var p;
-      var lib={};var ss={};var img={};
-      lib.ssMetadata = [
-        {name:"NU_atlas_1", frames: [[7568,2159,508,683],[5183,2297,508,683],[0,0,1816,907],[1818,0,1816,907]]}
-        // 👈 Achten Sie darauf, dass alle Arrays korrekt geschlossen sind (kein fehlendes Komma oder Klammer)
-      ];
-
-      // ... (weiterer Adobe Animate-Code)
-    })(createjs, AdobeAn);
-
-    // init()-Funktion hier (innerhalb von DOMContentLoaded)
-    var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
-    function init() {
-      canvas = document.getElementById("canvas");
-      anim_container = document.getElementById("animation_container");
-      dom_overlay_container = document.getElementById("dom_overlay_container");
-      var comp = AdobeAn.getComposition("9A27D9E747957B46937F8511DE0476E9");
-      var lib = comp.getLibrary();
-      var loader = new createjs.LoadQueue(false);
-      loader.installPlugin(createjs.Sound);
-      loader.addEventListener("fileload", function(evt){handleFileLoad(evt,comp)});
-      loader.addEventListener("complete", function(evt){handleComplete(evt,comp)});
-    }
-
-    // init() aufrufen (innerhalb von DOMContentLoaded)
-    init();
-  });
+<script>
+var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
+function init() {
+	canvas = document.getElementById("canvas");
+	anim_container = document.getElementById("animation_container");
+	dom_overlay_container = document.getElementById("dom_overlay_container");
+	var comp=AdobeAn.getComposition("9A27D9E747957B46937F8511DE0476E9");
+	var lib=comp.getLibrary();
+	var loader = new createjs.LoadQueue(false);
+	loader.installPlugin(createjs.Sound);
+	loader.addEventListener("fileload", function(evt){handleFileLoad(evt,comp)});
+	loader.addEventListener("complete", function(evt){handleComplete(evt,comp)});
+	var lib=comp.getLibrary();
+	loader.loadManifest(lib.properties.manifest);
+}
+function handleFileLoad(evt, comp) {
+	var images=comp.getImages();	
+	if (evt && (evt.item.type == "image")) { images[evt.item.id] = evt.result; }	
+}
+function handleComplete(evt,comp) {
+	//This function is always called, irrespective of the content. You can use the variable "stage" after it is created in token create_stage.
+	var lib=comp.getLibrary();
+	var ss=comp.getSpriteSheet();
+	var queue = evt.target;
+	var ssMetadata = lib.ssMetadata;
+	for(i=0; i<ssMetadata.length; i++) {
+		ss[ssMetadata[i].name] = new createjs.SpriteSheet( {"images": [queue.getResult(ssMetadata[i].name)], "frames": ssMetadata[i].frames} )
+	}
+	var preloaderDiv = document.getElementById("_preload_div_");
+	preloaderDiv.style.display = 'none';
+	canvas.style.display = 'block';
+	exportRoot = new lib.RECOVER_WIEDERHERGESTELLT_NU();
+	stage = new lib.Stage(canvas);	
+	//Registers the "tick" event listener.
+	fnStartAnimation = function() {
+		stage.addChild(exportRoot);
+		createjs.Ticker.framerate = lib.properties.fps;
+		createjs.Ticker.addEventListener("tick", stage);
+	}	    
+	//Code to support hidpi screens and responsive scaling.
+	AdobeAn.makeResponsive(true,'both',false,1,[canvas,preloaderDiv,anim_container,dom_overlay_container]);	
+	AdobeAn.compositionLoaded(lib.properties.id);
+	fnStartAnimation();
+}
+function playSound(id, loop, offset) {
+	return createjs.Sound.play(id, {'interrupt':createjs.Sound.INTERRUPT_EARLY, 'loop': loop, 'offset': offset});}
 </script>
 <!-- write your code here -->
-
+</head>
 <body onload="init();" style="margin:0px;">
 	<div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:1920px; height:1080px">
-		<canvas id="canvas" width="1920" height="1080" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
-		<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1920px; height:1080px; position: absolute; left: 0px; top: 0px; display: block;">
+		<canvas id="canvas" width="1920" height="1080" style="position: absolute; display: none; background-color:rgba(255, 255, 255, 1.00);"></canvas>
+		<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1920px; height:1080px; position: absolute; left: 0px; top: 0px; display: none;">
 		</div>
 	</div>
-	<script>
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("/NU_Tafel/service-worker.js");
-    });
-  }
-</script>
+    <div id='_preload_div_' style='position:absolute; top:0; left:0; display: inline-block; height:1080px; width: 1920px; text-align: center;'>	<span style='display: inline-block; height: 100%; vertical-align: middle;'></span>	<img src=images/_preloader.gif style='vertical-align: middle; max-height: 100%'/></div>
 </body>
 </html>
