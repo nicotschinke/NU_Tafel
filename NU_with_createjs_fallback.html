@@ -21,9 +21,10 @@
   </main>
 
   <script defer>
-    // Definiere AdobeAn als Fallback
+    // Definiere createjs und AdobeAn als globale Variablen
+    var createjs = createjs || {};
     var AdobeAn = AdobeAn || {};
-    
+
     document.addEventListener("DOMContentLoaded", function() {
 (function (cjs, an) {
 
