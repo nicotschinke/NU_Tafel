@@ -33,10 +33,11 @@
     // Warte auf das vollständige Laden aller Ressourcen
     window.onload = function() {
       // Stelle sicher, dass createjs und AdobeAn global verfügbar sind
-      if (typeof createjs === 'undefined') {
-        window.createjs = {};
+      if (typeof window.createjs === 'undefined') {
+        console.error("CreateJS ist nicht geladen!");
+        return;
       }
-      if (typeof AdobeAn === 'undefined') {
+      if (typeof window.AdobeAn === 'undefined') {
         window.AdobeAn = {};
       }
 
