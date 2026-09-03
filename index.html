@@ -22,9 +22,8 @@
 
 
 <script src="createjs.min.js" defer></script>
-<script src="https://code.createjs.com/AdobeAn/AdobeAn_latest.min.js" defer>
+<script src="AdobeAn.js" defer></script>
 	
-</script>
 	</head>
 <body>
 		 <canvas id="canvas"></canvas>
@@ -19372,64 +19371,68 @@ an.handleFilterCache = function(event) {
 		}
 	}
 }
-})(createjs = createjs||{}, AdobeAn = AdobeAn||{});
-var createjs, AdobeAn;
-</script>
-<script>
-var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
-function init() {
-	canvas = document.getElementById("canvas");
-	anim_container = document.getElementById("animation_container");
-	dom_overlay_container = document.getElementById("dom_overlay_container");
-	var comp=AdobeAn.getComposition("9A27D9E747957B46937F8511DE0476E9");
-	var lib=comp.getLibrary();
-	var loader = new createjs.LoadQueue(false);
-	loader.installPlugin(createjs.Sound);
-	loader.addEventListener("fileload", function(evt){handleFileLoad(evt,comp)});
-	loader.addEventListener("complete", function(evt){handleComplete(evt,comp)});
-	var lib=comp.getLibrary();
-	loader.loadManifest(lib.properties.manifest);
-}
-function handleFileLoad(evt, comp) {
-	var images=comp.getImages();	
-	if (evt && (evt.item.type == "image")) { images[evt.item.id] = evt.result; }	
-}
-function handleComplete(evt,comp) {
-	//This function is always called, irrespective of the content. You can use the variable "stage" after it is created in token create_stage.
-	var lib=comp.getLibrary();
-	var ss=comp.getSpriteSheet();
-	var queue = evt.target;
-	var ssMetadata = lib.ssMetadata;
-	for(i=0; i<ssMetadata.length; i++) {
-		ss[ssMetadata[i].name] = new createjs.SpriteSheet( {"images": [queue.getResult(ssMetadata[i].name)], "frames": ssMetadata[i].frames} )
-	}
-	exportRoot = new lib.RECOVER_WIEDERHERGESTELLT_NU();
-	stage = new lib.Stage(canvas);	
-	//Registers the "tick" event listener.
-	fnStartAnimation = function() {
-		stage.addChild(exportRoot);
-		createjs.Ticker.framerate = lib.properties.fps;
-		createjs.Ticker.addEventListener("tick", stage);
-	}	    
-	//Code to support hidpi screens and responsive scaling.
-	AdobeAn.makeResponsive(true,'both',false,1,[canvas,anim_container,dom_overlay_container]);	
-	AdobeAn.compositionLoaded(lib.properties.id);
-	fnStartAnimation();
-}
-	     })(createjs, AdobeAn);
-	var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
-      function init() {
-        canvas = document.getElementById("canvas");
-        anim_container = document.getElementById("animation_container");
-        dom_overlay_container = document.getElementById("dom_overlay_container");
-        var comp = AdobeAn.getComposition("9A27D9E747957846937F8511DE0476E9");
-        var lib = comp.getLibrary();
-        var loader = new createjs.LoadQueue(false);
-function playSound(id, loop, offset) {
-	return createjs.Sound.play(id, {'interrupt':createjs.Sound.INTERRUPT_EARLY, 'loop': loop, 'offset': offset});}
-		   }
 
-      init(); // init() aufrufen
+
+</script>
+<script defer>
+  document.addEventListener("DOMContentLoaded", function() {
+    if (typeof createjs === "undefined" || typeof AdobeAn === "undefined") {
+      console.error("createjs oder AdobeAn ist nicht definiert!");
+      return;
+    }
+
+    // IIFE mit korrekten Parametern
+    (function (cjs, an) {
+      // Frame-Rate-Code
+      const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      if (isMobile) {
+        cjs.Ticker.setFPS(24);
+      } else {
+        cjs.Ticker.setFPS(30);
+      }
+
+      // Rest des Adobe Animate-Codes (z. B. handleFilterCache, lib.ssMetadata, etc.)
+      an.handleFilterCache = function(event) {
+        if(!event.paused){
+          var target = event.target;
+          if(target){
+            if(target.filterCacheList){
+              for(var index = 0; index < target.filterCacheList.length; index++){
+                var cacheInst = target.filterCacheList[index];
+                if((cacheInst.startFrame <= target.currentFrame) && (target.currentFrame <= cacheInst.endFrame)){
+                  cacheInst.instance.cache(cacheInst.x, cacheInst.y, cacheInst.w, cacheInst.h);
+                }
+              }
+            }
+          }
+        }
+      };
+
+      var p;
+      var lib={};var ss={};var img={};
+      lib.ssMetadata = [
+        {name:"NU_atlas_1", frames: [[7568,2159,508,683],...]}
+      ];
+      // ... (weiterer Adobe Animate-Code)
+    })(createjs, AdobeAn);
+
+    // init()-Funktion hier
+    var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
+    function init() {
+      canvas = document.getElementById("canvas");
+      anim_container = document.getElementById("animation_container");
+      dom_overlay_container = document.getElementById("dom_overlay_container");
+      var comp = AdobeAn.getComposition("9A27D9E747957B46937F8511DE0476E9");
+      var lib = comp.getLibrary();
+      var loader = new createjs.LoadQueue(false);
+      loader.installPlugin(createjs.Sound);
+      loader.addEventListener("fileload", function(evt){handleFileLoad(evt,comp)});
+      loader.addEventListener("complete", function(evt){handleComplete(evt,comp)});
+    }
+
+    // init() aufrufen
+    init();
+  });
 </script>
 <!-- write your code here -->
 
