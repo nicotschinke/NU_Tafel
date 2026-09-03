@@ -5,7 +5,7 @@
   <meta name="authoring-tool" content="Adobe_Animate_CC">
   <meta name="description" content="Interaktive Animationen für Messetafeln – Doepke Schaltgeräte GmbH">
   <title>NU</title>
-  <script src="https://code.createjs.com/1.0.0/createjs.min.js" defer></script>
+  <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 </head>
 
 <body style="margin:0px;">
@@ -20,10 +20,8 @@
     </div>
   </main>
 
-  <script defer>
-    document.addEventListener("DOMContentLoaded", function() {
-      var createjs = createjs || {};
-      var AdobeAn = AdobeAn || {};
+  <script>
+    window.onload = function() {
       (function (cjs, an) {
 var p; // shortcut to reference prototypes
 var lib={};var ss={};var img={};
@@ -19397,7 +19395,7 @@ function handleComplete(evt,comp) {
 function playSound(id, loop, offset) {
 	return createjs.Sound.play(id, {'interrupt':createjs.Sound.INTERRUPT_EARLY, 'loop': loop, 'offset': offset});}
       init();
-    });
+    };
   </script>
 </body>
 </html>
