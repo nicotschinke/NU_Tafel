@@ -5,19 +5,10 @@
   <meta name="authoring-tool" content="Adobe_Animate_CC">
   <title>NU</title>
   <script src="https://code.createjs.com/1.0.0/createjs.min.js" defer></script>
-</head>
-
-<body style="margin:0px;">
-  <div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:1920px; height:1080px">
-    <canvas id="canvas" width="1920" height="1080" style="position: absolute; display: none; background-color:rgba(255, 255, 255, 1.00);"></canvas>
-    <div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1920px; height:1080px; position: absolute; left: 0px; top: 0px; display: none;"></div>
-  </div>
-  <div id='_preload_div_' style='position:absolute; top:0; left:0; display: inline-block; height:1080px; width: 1920px; text-align: center;'>
-    <span style='display: inline-block; height: 100%; vertical-align: middle;'></span>
-    <img src='images/_preloader.gif' style='vertical-align: middle; max-height: 100%'/>
-  </div>
-
   <script defer>
+    // Definiere AdobeAn als leeres Objekt, falls es nicht existiert
+    var AdobeAn = AdobeAn || {};
+    
     document.addEventListener("DOMContentLoaded", function() {
             (function (cjs, an) {
       var p; // shortcut to reference prototypes
@@ -19395,5 +19386,14 @@
       init();
     });
   </script>
-</body>
-</html>
+</head>
+
+<body style="margin:0px;">
+  <div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:1920px; height:1080px">
+    <canvas id="canvas" width="1920" height="1080" style="position: absolute; display: none; background-color:rgba(255, 255, 255, 1.00);"></canvas>
+    <div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1920px; height:1080px; position: absolute; left: 0px; top: 0px; display: none;"></div>
+  </div>
+  <div id='_preload_div_' style='position:absolute; top:0; left:0; display: inline-block; height:1080px; width: 1920px; text-align: center;'>
+    <span style='display: inline-block; height: 100%; vertical-align: middle;'></span>
+    <img src='images/_preloader.gif' style='vertical-align: middle; max-height: 100%'/></div>
+
