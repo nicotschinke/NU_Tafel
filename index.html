@@ -33,13 +33,20 @@
 		
 <script defer>
 	document.addEventListener("DOMContentLoaded", function() {
-(function (cjs, an) {
-const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-      if (isMobile) {
-        cjs.Ticker.setFPS(24); // 24 FPS für Mobilgeräte
-      } else {
-        cjs.Ticker.setFPS(30); // 30 FPS für Desktop
+document.addEventListener("DOMContentLoaded", function() {
+      if (typeof createjs === "undefined" || typeof AdobeAn === "undefined") {
+        console.error("createjs oder AdobeAn ist nicht definiert!");
+        return;
       }
+
+      // IIFE mit korrekten Parametern
+      (function (cjs, an) {
+        const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        if (isMobile) {
+          cjs.Ticker.setFPS(24);
+        } else {
+          cjs.Ticker.setFPS(30);
+        }
 	
 var p; // shortcut to reference prototypes
 var lib={};var ss={};var img={};
@@ -19409,8 +19416,20 @@ function handleComplete(evt,comp) {
 	AdobeAn.compositionLoaded(lib.properties.id);
 	fnStartAnimation();
 }
+	     })(createjs, AdobeAn);
+	var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
+      function init() {
+        canvas = document.getElementById("canvas");
+        anim_container = document.getElementById("animation_container");
+        dom_overlay_container = document.getElementById("dom_overlay_container");
+        var comp = AdobeAn.getComposition("9A27D9E747957846937F8511DE0476E9");
+        var lib = comp.getLibrary();
+        var loader = new createjs.LoadQueue(false);
 function playSound(id, loop, offset) {
 	return createjs.Sound.play(id, {'interrupt':createjs.Sound.INTERRUPT_EARLY, 'loop': loop, 'offset': offset});}
+		   }
+
+      init(); // init() aufrufen
 </script>
 <!-- write your code here -->
 
