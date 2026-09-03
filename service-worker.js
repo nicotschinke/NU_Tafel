@@ -2,6 +2,7 @@ const CACHE_NAME = "NU_Tafel";
 const ASSETS_TO_CACHE = [
   "/images/NU_atlas_1.webp",
   "/images/EW_atlas_3.webp",
+  "/images/_preloader.gif",
   "/createjs.min.js",
   "/index.html"
 ];
