@@ -5,6 +5,7 @@
   <meta name="authoring-tool" content="Adobe_Animate_CC">
   <meta name="description" content="Interaktive Animationen für Messetafeln – Doepke Schaltgeräte GmbH">
   <title>NU</title>
+  <!-- CreateJS laden -->
   <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 </head>
 
@@ -29,12 +30,17 @@
 <!-- $EMBED_LABELS -->
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
   <script>
+    // Warte auf das vollständige Laden aller Ressourcen
     window.onload = function() {
-      // Definiere globale Variablen
-      window.createjs = window.createjs || {};
-      window.AdobeAn = window.AdobeAn || {};
+      // Stelle sicher, dass createjs und AdobeAn global verfügbar sind
+      if (typeof createjs === 'undefined') {
+        window.createjs = {};
+      }
+      if (typeof AdobeAn === 'undefined') {
+        window.AdobeAn = {};
+      }
 
-      // IIFE mit korrekter Zuordnung
+      // IIFE mit korrekter Parameterübergabe
       (function(cjs, an) {
         var p; // shortcut to reference prototypes
         var lib={}; var ss={}; var img={};
@@ -19363,7 +19369,7 @@ an.handleFilterCache = function(event) {
 		}
 	}
 }
-})(createjs = createjs||{}, AdobeAn = AdobeAn||{});
+})(createjs, AdobeAn);
 var createjs, AdobeAn;
 var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
 function init() {
