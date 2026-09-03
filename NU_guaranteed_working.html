@@ -32,12 +32,14 @@
   <script>
     // Warte auf das vollständige Laden aller Ressourcen
     window.onload = function() {
-      // Stelle sicher, dass createjs und AdobeAn global verfügbar sind
-      if (typeof window.createjs === 'undefined') {
-        console.error("CreateJS ist nicht geladen!");
+      // Überprüfe, ob createjs verfügbar ist
+      if (typeof createjs === 'undefined' || typeof createjs.MovieClip === 'undefined') {
+        console.error("CreateJS oder MovieClip ist nicht verfügbar!");
         return;
       }
-      if (typeof window.AdobeAn === 'undefined') {
+      
+      // Überprüfe, ob AdobeAn verfügbar ist
+      if (typeof AdobeAn === 'undefined') {
         window.AdobeAn = {};
       }
 
