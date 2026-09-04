@@ -1,0 +1,5 @@
+/images/NU_atlas_1.png
+  Cache-Control: max-age=31536000, immutable
+
+/createjs.min.js
+  Cache-Control: max-age=31536000, immutable
