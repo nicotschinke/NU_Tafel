@@ -12186,6 +12186,29 @@ if (reversed == null) { reversed = false; }
 		var icon_B_r = root.icon_B_r;
 		var fi_3 = root.fi_3;
 		var btn_B_r = root.btn_B_r;
+		// ========== AudioContext für Sound vorbereiten ==========
+		// Diese Funktion wird nach der ersten Benutzerinteraktion aufgerufen
+		function enableAudioContext() {
+		    if (typeof createjs !== 'undefined' && createjs.Sound) {
+		        createjs.Sound.registerPlugins([createjs.WebAudioPlugin]);
+		        // Falls Sie Sound-Dateien haben, registrieren Sie sie hier:
+		        // createjs.Sound.registerSounds([{id: "yourSoundID", src: "sounds/yourSound.mp3"}]);
+		        // init() aufrufen, falls noch nicht geschehen
+		        if (window.init) {
+		            window.init();
+		        }
+		    }
+		}
+		// ========== Event-Listener für erste Benutzerinteraktion ==========
+		// Dieser Listener startet den AudioContext und aktiviert die Animation
+		// Wichtig: Dieser Listener muss vor allen anderen Event-Listenern stehen
+		if (document) {
+		    document.addEventListener('click', function() {
+		        enableAudioContext();
+		        // Entferne diesen Listener, da er nur einmal benötigt wird
+		        document.removeEventListener('click', arguments.callee);
+		    });
+		}
 		// ========== Anfangszustände (Linke Seite) ==========
 		if (HG) HG.gotoAndStop("HG_weiß");
 		if (icon_B_l) {
@@ -12258,22 +12281,6 @@ if (reversed == null) { reversed = false; }
 		        }
 		    });
 		}
-		// ========== AudioContext für Sound vorbereiten ==========
-		// Diese Funktion wird nach der ersten Benutzerinteraktion aufgerufen
-		function enableAudioAndInit() {
-		    if (typeof createjs !== 'undefined' && createjs.Sound) {
-		        createjs.Sound.registerPlugins([createjs.WebAudioPlugin]);
-		        // Falls Sie Sound-Dateien haben, registrieren Sie sie hier:
-		        // createjs.Sound.registerSounds([{id: "yourSoundID", src: "sounds/yourSound.mp3"}]);
-		        // init() aufrufen, falls noch nicht geschehen
-		        if (window.init) {
-		            window.init();
-		        }
-		    }
-		}
-		// ========== Event-Listener für erste Benutzerinteraktion ==========
-		// Dieser Listener startet den AudioContext und aktiviert die Animation
-		document.addEventListener('click', enableAudioAndInit, { once: true });
 		// ========== Schalter-Funktionen (Rechte Seite) ==========
 		function setupSchalterRechts(name) {
 		    var schalter = (name === "NUS" && icon_B_r) ? icon_B_r.NUS : root[name];
@@ -18973,8 +18980,8 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/NU_performance_atlas_1.png", id:"NU_performance_atlas_1"},
-		{src:"sounds/Klack.mp3", id:"Klack"}
+		{src:"images/NU_performance_atlas_1.png?1788509383325", id:"NU_performance_atlas_1"},
+		{src:"sounds/Klack.mp3?1788509388994", id:"Klack"}
 	],
 	preloads: []
 };
