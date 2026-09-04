@@ -17,6 +17,19 @@
 <!-- $EMBED_IMAGES -->
 <!-- $EMBED_LABELS -->
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+	<script>
+    // AudioContext erst nach Benutzerinteraktion starten
+    document.addEventListener('click', function() {
+      if (typeof createjs !== 'undefined' && createjs.Sound) {
+        createjs.Sound.registerPlugins([createjs.WebAudioPlugin]);
+        // Falls Sie Sound-Dateien haben, registrieren Sie sie hier:
+        // createjs.Sound.registerSounds([{id: "yourSoundID", src: "sounds/yourSound.mp3"}]);
+        if (window.init) {
+          window.init();
+        }
+      }
+    }, { once: true });
+  </script>
 <script>
 (function (cjs, an) {
 var p; // shortcut to reference prototypes
