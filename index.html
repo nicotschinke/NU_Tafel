@@ -20,6 +20,25 @@
 <!-- $EMBED_IMAGES -->
 <!-- $EMBED_LABELS -->
 	
+<style>
+  /* Entfernt die 300-ms-Verzögerung für ALLE Buttons und interaktiven Elemente */
+  #btn_HG, #btn_B_l, #btn_B_r, #btn_reset,
+  #fi_1, #fi_2, #fi_3,
+  #NUS,
+  #icon_B_l, #icon_B_r,
+  #HG, #Bereich,
+  #l_LED_b, #l_LED_f, #l_f, #l_l1, #l_l2, #l_l3, #l_n,
+  #r_LED_b, #r_LED_f, #r_f, #r_l1, #r_l2, #r_l3, #r_n,
+  #RECOVER_WIEDERHERGESTELLT_NU {
+    touch-action: none !important;
+    -ms-touch-action: none !important;
+    cursor: pointer;
+    will-change: transform;
+    transform: translateZ(0);
+  }
+</style>
+	
+	
 <script src="js/createjs.min.js"></script>
 
 <script src="js/fast-touch.js"></script>
