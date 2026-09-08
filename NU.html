@@ -16,9 +16,8 @@
 <!-- Animate-Erzwingung für All-in-One-Export -->
 <!-- $EMBED_IMAGES -->
 <!-- $EMBED_LABELS -->
-<script src="https://code.createjs.com/1.0.0/createjs.min.js" defer></script>
-<script defer>
-	document.addEventListener("DOMContentLoaded", function() {
+<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+<script>
 (function (cjs, an) {
 var p; // shortcut to reference prototypes
 var lib={};var ss={};var img={};
@@ -19344,7 +19343,8 @@ an.handleFilterCache = function(event) {
 		}
 	}
 }
-})(createjs, AdobeAn);
+})(createjs = createjs||{}, AdobeAn = AdobeAn||{});
+var createjs, AdobeAn;
 </script>
 <script>
 var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
@@ -19374,9 +19374,6 @@ function handleComplete(evt,comp) {
 	for(i=0; i<ssMetadata.length; i++) {
 		ss[ssMetadata[i].name] = new createjs.SpriteSheet( {"images": [queue.getResult(ssMetadata[i].name)], "frames": ssMetadata[i].frames} )
 	}
-	var preloaderDiv = document.getElementById("_preload_div_");
-	preloaderDiv.style.display = 'none';
-	canvas.style.display = 'block';
 	exportRoot = new lib.RECOVER_WIEDERHERGESTELLT_NU();
 	stage = new lib.Stage(canvas);	
 	//Registers the "tick" event listener.
@@ -19386,25 +19383,20 @@ function handleComplete(evt,comp) {
 		createjs.Ticker.addEventListener("tick", stage);
 	}	    
 	//Code to support hidpi screens and responsive scaling.
-	AdobeAn.makeResponsive(true,'both',false,1,[canvas,preloaderDiv,anim_container,dom_overlay_container]);	
+	AdobeAn.makeResponsive(true,'both',false,1,[canvas,anim_container,dom_overlay_container]);	
 	AdobeAn.compositionLoaded(lib.properties.id);
 	fnStartAnimation();
 }
 function playSound(id, loop, offset) {
 	return createjs.Sound.play(id, {'interrupt':createjs.Sound.INTERRUPT_EARLY, 'loop': loop, 'offset': offset});}
-init(); 
-  });
-
-	
 </script>
 <!-- write your code here -->
 </head>
 <body onload="init();" style="margin:0px;">
 	<div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:1920px; height:1080px">
-		<canvas id="canvas" width="1920" height="1080" style="position: absolute; display: none; background-color:rgba(255, 255, 255, 1.00);"></canvas>
-		<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1920px; height:1080px; position: absolute; left: 0px; top: 0px; display: none;">
+		<canvas id="canvas" width="1920" height="1080" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
+		<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1920px; height:1080px; position: absolute; left: 0px; top: 0px; display: block;">
 		</div>
 	</div>
-    <div id='_preload_div_' style='position:absolute; top:0; left:0; display: inline-block; height:1080px; width: 1920px; text-align: center;'>	<span style='display: inline-block; height: 100%; vertical-align: middle;'></span>	<img src=images/_preloader.gif style='vertical-align: middle; max-height: 100%'/></div>
 </body>
 </html>
