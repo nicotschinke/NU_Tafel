@@ -19,6 +19,23 @@
 <!-- Animate-Erzwingung für All-in-One-Export -->
 <!-- $EMBED_IMAGES -->
 <!-- $EMBED_LABELS -->
+
+<script>
+  // Überschreiben von setTimeout in CreateJS, um requestAnimationFrame zu nutzen
+  window.addEventListener('load', function() {
+    if (window.createjs) {
+      var originalSetTimeout = window.setTimeout;
+      window.setTimeout = function(fn, delay) {
+        if (delay <= 16) { // 16ms ≈ 60 FPS
+          return requestAnimationFrame(fn);
+        } else {
+          return originalSetTimeout(fn, delay);
+        }
+      };
+    }
+  });
+</script>
+
 	
 <style>
   /* Entfernt die 300-ms-Verzögerung für ALLE Buttons und interaktiven Elemente */
@@ -19424,5 +19441,7 @@ function playSound(id, loop, offset) {
 		<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1920px; height:1080px; position: absolute; left: 0px; top: 0px; display: block;">
 		</div>
 	</div>
+<!-- Canvas mit willReadFrequently -->
+  <canvas id="stage" willReadFrequently="true"></canvas>	
 </body>
 </html>
