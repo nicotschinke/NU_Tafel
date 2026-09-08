@@ -20,6 +20,57 @@
 <!-- $EMBED_IMAGES -->
 <!-- $EMBED_LABELS -->
 
+<!-- Canvas manuell erstellen mit willReadFrequently -->
+  <script>
+    var canvas = document.createElement('canvas');
+    canvas.id = 'stage';
+    canvas.setAttribute('willReadFrequently', 'true');
+    document.body.appendChild(canvas);
+  </script>
+
+  <!-- Fallback: MutationObserver für dynamisch erstellte Canvas-Elemente -->
+  <script>
+    window.addEventListener('load', function() {
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          mutation.addedNodes.forEach(function(node) {
+            if (node.nodeName === 'CANVAS') {
+              node.setAttribute('willReadFrequently', 'true');
+            }
+            if (node.querySelectorAll) {
+              var canvases = node.querySelectorAll('canvas');
+              canvases.forEach(function(canvas) {
+                canvas.setAttribute('willReadFrequently', 'true');
+              });
+            }
+          });
+        });
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    });
+  </script>
+
+  <!-- Fix für AudioContext -->
+  <script>
+    window.addEventListener('load', function() {
+      if (window.createjs && window.createjs.Sound) {
+        function initAudioContext() {
+          if (createjs.Sound.activePlugin) {
+            var audioContext = createjs.Sound.activePlugin._context;
+            if (audioContext && audioContext.state === 'suspended') {
+              audioContext.resume().catch(function(err) {
+                console.error('Fehler beim Starten von AudioContext:', err);
+              });
+            }
+          }
+          document.removeEventListener('click', initAudioContext);
+          document.removeEventListener('touchstart', initAudioContext);
+        }
+        document.addEventListener('click', initAudioContext, { once: true });
+        document.addEventListener('touchstart', initAudioContext, { once: true });
+      }
+    });
+  </script>
 <script>
   // Überschreiben von setTimeout in CreateJS, um requestAnimationFrame zu nutzen
   window.addEventListener('load', function() {
@@ -19441,7 +19492,6 @@ function playSound(id, loop, offset) {
 		<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1920px; height:1080px; position: absolute; left: 0px; top: 0px; display: block;">
 		</div>
 	</div>
-<!-- Canvas mit willReadFrequently -->
-  <canvas id="stage" willReadFrequently="true"></canvas>	
+	
 </body>
 </html>
