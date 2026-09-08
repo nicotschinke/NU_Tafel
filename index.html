@@ -20,6 +20,21 @@
 <!-- $EMBED_IMAGES -->
 <!-- $EMBED_LABELS -->
 	
+<style>
+  /* Standardmäßig für alle Buttons in Adobe Animate */
+  [id^="btn_"], [id^="fi_"], [id^="l_"], [id^="r_"], [id^="NUS"] {
+    touch-action: manipulation;
+  }
+
+  /* Falls Buttons in MovieClips sind (z. B. icon_B_l.btn_B_l) */
+  .btn_B_l, .btn_B_r, .fi_1, .fi_2, .fi_3, .NUS,
+  .l_l1, .l_l2, .l_l3, .l_n, .l_f,
+  .r_l1, .r_l2, .r_l3, .r_n, .r_f {
+    touch-action: manipulation;
+  }
+</style>
+
+	
 <script src="js/createjs.min.js"></script>
 
 <script src="js/touch-fix.js"></script>
