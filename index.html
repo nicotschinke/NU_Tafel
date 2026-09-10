@@ -20,6 +20,15 @@
 <!-- $EMBED_IMAGES -->
 <!-- $EMBED_LABELS -->
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var canvas = document.createElement('canvas');
+      canvas.id = 'stage';
+      canvas.setAttribute('willReadFrequently', 'true');
+      document.body.appendChild(canvas);
+    });
+  </script>
+
 
 <script>
   // Überschreiben von setTimeout in CreateJS, um requestAnimationFrame zu nutzen
@@ -19331,30 +19340,25 @@ an.makeResponsive = function(isResp, respDim, isScale, scaleType, domContainers)
 	var lastW, lastH, lastS=1;		
 	window.addEventListener('resize', resizeCanvas);		
 	resizeCanvas();		
-	function resizeCanvas() {
-  var w = lib.properties.width, h = lib.properties.height;
-  var iw = window.innerWidth, ih = window.innerHeight;
-  var pRatio = window.devicePixelRatio || 1, xRatio = iw / w, yRatio = ih / h, sRatio = 1;
-
-  // ✅ Null-Prüfung hinzufügen
-  if (!domContainers || !domContainers[0]) {
-    console.error("domContainers[0] ist null oder undefined!");
-    return;
-  }
-
-  domContainers[0].width = w * pRatio * sRatio;
-  domContainers[0].height = h * pRatio * sRatio;
-  domContainers.forEach(function(container) {
-    if (container) { // ✅ Null-Prüfung für alle Container
-      container.style.width = w * sRatio + 'px';
-      container.style.height = h * sRatio + 'px';
-    }
-  });
-  if (stage) { // ✅ Null-Prüfung für stage
-    stage.scaleX = pRatio * sRatio;
-    stage.scaleY = pRatio * sRatio;
-  }
-}
+	function resizeCanvas() {			
+		var w = lib.properties.width, h = lib.properties.height;			
+		var iw = window.innerWidth, ih=window.innerHeight;			
+		var pRatio = window.devicePixelRatio || 1, xRatio=iw/w, yRatio=ih/h, sRatio=1;			
+		if(isResp) {                
+			if((respDim=='width'&&lastW==iw) || (respDim=='height'&&lastH==ih)) {                    
+				sRatio = lastS;                
+			}				
+			else if(!isScale) {					
+				if(iw<w || ih<h)						
+					sRatio = Math.min(xRatio, yRatio);				
+			}				
+			else if(scaleType==1) {					
+				sRatio = Math.min(xRatio, yRatio);				
+			}				
+			else if(scaleType==2) {					
+				sRatio = Math.max(xRatio, yRatio);				
+			}			
+		}
 		domContainers[0].width = w * pRatio * sRatio;			
 		domContainers[0].height = h * pRatio * sRatio;
 		domContainers.forEach(function(container) {				
@@ -19369,7 +19373,6 @@ an.makeResponsive = function(isResp, respDim, isScale, scaleType, domContainers)
 		stage.tickOnUpdate = true;		
 	}
 }
- var an = an || {};
 an.handleSoundStreamOnTick = function(event) {
 	if(!event.paused){
 		var stageChild = stage.getChildAt(0);
@@ -19398,7 +19401,6 @@ var createjs, AdobeAn;
 </script>
 <script>
 var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
-	var AdobeAn = AdobeAn || {};
 function init() {
 	canvas = document.getElementById("canvas");
 	anim_container = document.getElementById("animation_container");
@@ -19434,7 +19436,7 @@ function handleComplete(evt,comp) {
 		createjs.Ticker.addEventListener("tick", stage);
 	}	    
 	//Code to support hidpi screens and responsive scaling.
-	AdobeAn.makeResponsive(true,'both',false,1, [document.getElementById('stage'), anim_container, dom_overlay_container]);	
+	AdobeAn.makeResponsive(true,'both',false,1,[canvas,anim_container,dom_overlay_container]);	
 	AdobeAn.compositionLoaded(lib.properties.id);
 	fnStartAnimation();
 }
@@ -19444,39 +19446,88 @@ function playSound(id, loop, offset) {
 <!-- write your code here -->
 </head>
 <body style="margin:0px;">
+<body onload="init();" style="margin:0px;">
 	<div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:1920px; height:1080px">
-		<canvas id="stage" width="1920" height="1080" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);" willReadFrequently="true"></canvas>
+		<canvas id="canvas" width="1920" height="1080" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
 		<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1920px; height:1080px; position: absolute; left: 0px; top: 0px; display: block;">
 		</div>
 	</div>
-
-   <!-- Fix für AudioContext -->
+<!-- Canvas hier erstellen, wo document.body verfügbar ist -->
   <script>
-    document.addEventListener('click', function initAudioContext() {
-      if (window.createjs?.Sound?.activePlugin?._context?.state === 'suspended') {
-        createjs.Sound.activePlugin._context.resume();
+var an = an || {};
+var AdobeAn = AdobeAn || {};
+    var canvas = document.createElement('canvas');
+    canvas.id = 'stage';
+    canvas.setAttribute('willReadFrequently', 'true');
+    document.body.appendChild(canvas);
+  </script>
+
+  <!-- Rest der Skripte -->
+  <script>
+var an = an || {};
+var AdobeAn = AdobeAn || {};
+    // Fallback: MutationObserver für dynamisch erstellte Canvas-Elemente
+    var observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.nodeName === 'CANVAS') {
+            node.setAttribute('willReadFrequently', 'true');
+          }
+          if (node.querySelectorAll) {
+            var canvases = node.querySelectorAll('canvas');
+            canvases.forEach(function(canvas) {
+              canvas.setAttribute('willReadFrequently', 'true');
+            });
+          }
+        });
+      });
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  </script>
+
+  <!-- Fix für AudioContext -->
+  <script>
+var an = an || {};
+var AdobeAn = AdobeAn || {};
+    if (window.createjs && window.createjs.Sound) {
+      function initAudioContext() {
+        if (createjs.Sound.activePlugin) {
+          var audioContext = createjs.Sound.activePlugin._context;
+          if (audioContext && audioContext.state === 'suspended') {
+            audioContext.resume().catch(function(err) {
+              console.error('Fehler beim Starten von AudioContext:', err);
+            });
+          }
+        }
+        document.removeEventListener('click', initAudioContext);
+        document.removeEventListener('touchstart', initAudioContext);
       }
-      document.removeEventListener('click', initAudioContext);
-    }, { once: true });
-  </script>
-
-  <!-- Fix für setTimeout -->
-  <script>
-    if (window.createjs) {
-      const originalSetTimeout = window.setTimeout;
-      window.setTimeout = function(fn, delay) {
-        return delay <= 16 ? requestAnimationFrame(fn) : originalSetTimeout(fn, delay);
-      };
-    }
-  </script>
-
-  <!-- Manuell init() aufrufen (falls nötig) -->
-  <script>
-    if (typeof init === 'function') {
-      init();
+      document.addEventListener('click', initAudioContext, { once: true });
+      document.addEventListener('touchstart', initAudioContext, { once: true });
     }
   </script>
 
 	
+
+<!-- Fix für AudioContext -->
+<script>
+  document.addEventListener('click', function initAudioContext() {
+    if (window.createjs?.Sound?.activePlugin?._context?.state === 'suspended') {
+      createjs.Sound.activePlugin._context.resume();
+    }
+    document.removeEventListener('click', initAudioContext);
+  }, { once: true });
+</script>
+
+<!-- Fix für setTimeout -->
+<script>
+  if (window.createjs) {
+    const originalSetTimeout = window.setTimeout;
+    window.setTimeout = function(fn, delay) {
+      return delay <= 16 ? requestAnimationFrame(fn) : originalSetTimeout(fn, delay);
+    };
+  }
+</script>
+
 </body>
 </html>
