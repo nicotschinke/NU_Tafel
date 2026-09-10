@@ -19369,6 +19369,7 @@ an.makeResponsive = function(isResp, respDim, isScale, scaleType, domContainers)
 		stage.tickOnUpdate = true;		
 	}
 }
+ var an = an || {};
 an.handleSoundStreamOnTick = function(event) {
 	if(!event.paused){
 		var stageChild = stage.getChildAt(0);
@@ -19397,6 +19398,7 @@ var createjs, AdobeAn;
 </script>
 <script>
 var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
+	var AdobeAn = AdobeAn || {};
 function init() {
 	canvas = document.getElementById("canvas");
 	anim_container = document.getElementById("animation_container");
