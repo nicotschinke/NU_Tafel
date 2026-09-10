@@ -19445,58 +19445,37 @@ function playSound(id, loop, offset) {
 </script>
 <!-- write your code here -->
 </head>
-<body onload="init();" style="margin:0px;">
+<body style="margin:0px;">
 	<div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:1920px; height:1080px">
-		<canvas id="canvas" width="1920" height="1080" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
+		<canvas id="stage" width="1920" height="1080" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);" willReadFrequently="true"></canvas>
 		<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1920px; height:1080px; position: absolute; left: 0px; top: 0px; display: block;">
 		</div>
 	</div>
-<!-- Canvas hier erstellen, wo document.body verfügbar ist -->
-  <script>
-    var canvas = document.createElement('canvas');
-    canvas.id = 'stage';
-    canvas.setAttribute('willReadFrequently', 'true');
-    document.body.appendChild(canvas);
-  </script>
 
-  <!-- Rest der Skripte -->
+   <!-- Fix für AudioContext -->
   <script>
-    // Fallback: MutationObserver für dynamisch erstellte Canvas-Elemente
-    var observer = new MutationObserver(function(mutations) {
-      mutations.forEach(function(mutation) {
-        mutation.addedNodes.forEach(function(node) {
-          if (node.nodeName === 'CANVAS') {
-            node.setAttribute('willReadFrequently', 'true');
-          }
-          if (node.querySelectorAll) {
-            var canvases = node.querySelectorAll('canvas');
-            canvases.forEach(function(canvas) {
-              canvas.setAttribute('willReadFrequently', 'true');
-            });
-          }
-        });
-      });
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-  </script>
-
-  <!-- Fix für AudioContext -->
-  <script>
-    if (window.createjs && window.createjs.Sound) {
-      function initAudioContext() {
-        if (createjs.Sound.activePlugin) {
-          var audioContext = createjs.Sound.activePlugin._context;
-          if (audioContext && audioContext.state === 'suspended') {
-            audioContext.resume().catch(function(err) {
-              console.error('Fehler beim Starten von AudioContext:', err);
-            });
-          }
-        }
-        document.removeEventListener('click', initAudioContext);
-        document.removeEventListener('touchstart', initAudioContext);
+    document.addEventListener('click', function initAudioContext() {
+      if (window.createjs?.Sound?.activePlugin?._context?.state === 'suspended') {
+        createjs.Sound.activePlugin._context.resume();
       }
-      document.addEventListener('click', initAudioContext, { once: true });
-      document.addEventListener('touchstart', initAudioContext, { once: true });
+      document.removeEventListener('click', initAudioContext);
+    }, { once: true });
+  </script>
+
+  <!-- Fix für setTimeout -->
+  <script>
+    if (window.createjs) {
+      const originalSetTimeout = window.setTimeout;
+      window.setTimeout = function(fn, delay) {
+        return delay <= 16 ? requestAnimationFrame(fn) : originalSetTimeout(fn, delay);
+      };
+    }
+  </script>
+
+  <!-- Manuell init() aufrufen (falls nötig) -->
+  <script>
+    if (typeof init === 'function') {
+      init();
     }
   </script>
 
