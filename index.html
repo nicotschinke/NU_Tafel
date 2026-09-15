@@ -6,22 +6,16 @@
     <title>NU</title>
     <!-- $EMBED_IMAGES -->
     <!-- $EMBED_LABELS -->
-
-    <!-- BEIDE Skripte mit defer laden, um die Reihenfolge zu gewährleisten -->
     <script src="https://code.createjs.com/1.0.0/createjs.min.js" defer></script>
     <script src="NU.js" defer></script>
-
     <script>
         var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
 
-        // Warten, bis das DOM und alle Skripte geladen sind
         window.onload = function() {
-            // Prüfen, ob AdobeAn verfügbar ist
             if (!window.AdobeAn) {
-                setTimeout(arguments.callee, 100); // Warte 100ms und versuche es erneut
+                setTimeout(arguments.callee, 100);
                 return;
             }
-
             init();
         };
 
@@ -62,6 +56,7 @@
 
             exportRoot = new lib.RECOVER_WIEDERHERGESTELLT_NU();
             stage = new lib.Stage(canvas);
+            stage.addChild(exportRoot); // WICHTIG: exportRoot zur Stage hinzufügen!
 
             // Standard-Animate-Code für Responsive Scaling
             AdobeAn.makeResponsive(true, 'both', false, 1, [canvas, anim_container, dom_overlay_container]);
@@ -72,6 +67,8 @@
             if (window.initNUCode) {
                 initNUCode();
             }
+
+            stage.update(); // WICHTIG: Stage aktualisieren!
         }
     </script>
 </head>
