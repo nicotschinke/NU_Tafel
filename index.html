@@ -50,12 +50,20 @@
         AdobeAn.compositionLoaded(lib.properties.id);
 
         // ========== WICHTIG: Hier Ihren Code aus NU.js aufrufen ==========
-        window.root = exportRoot; // Global verfügbar machen
-        if (window.initNUCode) initNUCode(); // Diese Funktion wird in NU.js definiert
-    }
+        window.onload = function() {
+            // Prüfen, ob AdobeAn verfügbar ist
+            if (window.AdobeAn) {
+                init();
+            } else {
+                // Falls nicht, kurz warten und erneut prüfen
+                setTimeout(function() {
+                    if (window.AdobeAn) init();
+                }, 100);
+            }
+        };
     </script>
 </head>
-<body onload="init();" style="margin:0px;">
+<body style="margin:0px;">
     <div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:1920px; height:1080px">
         <canvas id="canvas" width="1920" height="1080" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
         <div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1920px; height:1080px; position: absolute; left: 0px; top: 0px; display: block;"></div>
