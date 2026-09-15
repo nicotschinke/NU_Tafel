@@ -41,27 +41,41 @@
         }
 
         function handleComplete(evt) {
-            var comp = AdobeAn.getComposition("9A27D9E747957B46937F8511DE0476E9");
-            var lib = comp.getLibrary();
-            var ss = comp.getSpriteSheet();
-            var queue = evt.target;
-            var ssMetadata = lib.ssMetadata;
+    var comp = AdobeAn.getComposition("9A27D9E747957B46937F8511DE0476E9");
+    var lib = comp.getLibrary();
+    var ss = comp.getSpriteSheet();
+    var queue = evt.target;
+    var ssMetadata = lib.ssMetadata;
 
-            for (var i = 0; i < ssMetadata.length; i++) {
-                ss[ssMetadata[i].name] = new createjs.SpriteSheet({
-                    "images": [queue.getResult(ssMetadata[i].name)],
-                    "frames": ssMetadata[i].frames
-                });
-            }
+    for (var i = 0; i < ssMetadata.length; i++) {
+        ss[ssMetadata[i].name] = new createjs.SpriteSheet({
+            "images": [queue.getResult(ssMetadata[i].name)],
+            "frames": ssMetadata[i].frames
+        });
+    }
 
-            exportRoot = new lib.RECOVER_WIEDERHERGESTELLT_NU();
-            stage = new lib.Stage(canvas);
-            stage.addChild(exportRoot); // WICHTIG: exportRoot zur Stage hinzufügen
+    exportRoot = new lib.RECOVER_WIEDERHERGESTELLT_NU();
+    stage = new lib.Stage(canvas);
 
-            // Debugging: Prüfen, ob exportRoot Inhalte hat
-            console.log("exportRoot:", exportRoot);
-            console.log("exportRoot.HG:", exportRoot.HG);
-            console.log("exportRoot.HG.HG_weiß:", exportRoot.HG?.HG_weiß);
+    // ========== DEBUGGING: Prüfen, ob exportRoot Inhalte hat ==========
+    console.log("exportRoot:", exportRoot); // Sollte ein Objekt sein, nicht undefined
+    console.log("exportRoot.HG:", exportRoot.HG); // Sollte definiert sein
+    console.log("exportRoot.HG.HG_weiß:", exportRoot.HG?.HG_weiß); // Sollte definiert sein
+    console.log("stage:", stage); // Sollte ein Stage-Objekt sein
+    console.log("canvas:", canvas); // Sollte ein Canvas-Element sein
+
+    stage.addChild(exportRoot);
+    stage.update();
+
+    AdobeAn.makeResponsive(true, 'both', false, 1, [canvas, anim_container, dom_overlay_container]);
+    AdobeAn.compositionLoaded(lib.properties.id);
+
+    createjs.Ticker.framerate = 60;
+    createjs.Ticker.addEventListener("tick", stage);
+
+    window.root = exportRoot;
+    if (window.initNUCode) initNUCode();
+}
 
             // Standard-Animate-Code
             AdobeAn.makeResponsive(true, 'both', false, 1, [canvas, anim_container, dom_overlay_container]);
