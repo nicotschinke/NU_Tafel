@@ -51,7 +51,7 @@
 
         // ========== WICHTIG: Hier Ihren Code aus NU.js aufrufen ==========
         window.root = exportRoot; // Global verfügbar machen
-        initNUCode(); // Diese Funktion wird in NU.js definiert
+        if (window.initNUCode) initNUCode(); // Diese Funktion wird in NU.js definiert
     }
     </script>
 </head>
