@@ -1,71 +1,96 @@
 <!DOCTYPE html>
-<!--
-	NOTES:
-	1. All tokens are represented by '$' sign in the template.
-	2. You can write your code only wherever mentioned.
-	3. All occurrences of existing tokens will be replaced by their appropriate values.
-	4. Blank lines will be removed automatically.
-	5. Remove unnecessary comments before creating your template.
--->
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="authoring-tool" content="Adobe_Animate_CC">
 <title>NU</title>
-<!-- write your code here -->
-<!-- Animate-Erzwingung für All-in-One-Export -->
+<!-- Throttle-Funktion für Performance -->
+<script>
+function throttle(func, limit) {
+    var lastFunc;
+    var lastRan;
+    return function() {
+        var context = this;
+        var args = arguments;
+        if (!lastRan) {
+            func.apply(context, args);
+            lastRan = Date.now();
+        } else {
+            clearTimeout(lastFunc);
+            lastFunc = setTimeout(function() {
+                if ((Date.now() - lastRan) >= limit) {
+                    func.apply(context, args);
+                    lastRan = Date.now();
+                }
+            }, limit - (Date.now() - lastRan));
+        }
+    };
+}
+</script>
 <!-- $EMBED_IMAGES -->
 <!-- $EMBED_LABELS -->
 <script src="https://code.createjs.com/1.0.0/createjs.min.js" defer></script>
 <script src="NU.js" defer></script>
 <script>
 var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
+
 function init() {
-	canvas = document.getElementById("canvas");
-	anim_container = document.getElementById("animation_container");
-	dom_overlay_container = document.getElementById("dom_overlay_container");
-	var comp=AdobeAn.getComposition("9A27D9E747957B46937F8511DE0476E9");
-	var lib=comp.getLibrary();
-	var loader = new createjs.LoadQueue(false);
-	loader.addEventListener("fileload", function(evt){handleFileLoad(evt,comp)});
-	loader.addEventListener("complete", function(evt){handleComplete(evt,comp)});
-	var lib=comp.getLibrary();
-	loader.loadManifest(lib.properties.manifest);
+    canvas = document.getElementById("canvas");
+    anim_container = document.getElementById("animation_container");
+    dom_overlay_container = document.getElementById("dom_overlay_container");
+    var comp = AdobeAn.getComposition("9A27D9E747957B46937F8511DE0476E9");
+    var lib = comp.getLibrary();
+
+    // Preloading mit Parallel-Loading
+    var loader = new createjs.LoadQueue(false);
+    loader.addEventListener("fileload", function(evt) { handleFileLoad(evt, comp); });
+    loader.addEventListener("complete", function(evt) {
+        handleComplete(evt, comp);
+
+        // ========== Stage mit Optimierungen initialisieren ==========
+        stage = new lib.Stage(canvas);
+        stage.enableDOMEvents = false; // Reduziert Event-Overhead
+        stage.autoClear = false; // Manuelles Clearen
+
+        // Hardware-Beschleunigung aktivieren
+        createjs.Touch.enable(stage);
+        createjs.Ticker.setFPS(60); // Begrenzen auf 60 FPS
+        createjs.Ticker.addEventListener("tick", stage);
+
+        // ========== Caching für statische Grafiken ==========
+        if (exportRoot.HG) {
+            if (exportRoot.HG.HG_weiß) exportRoot.HG.HG_weiß.cache(0, 0, exportRoot.HG.HG_weiß.width, exportRoot.HG.HG_weiß.height);
+            if (exportRoot.HG.HG_blau) exportRoot.HG.HG_blau.cache(0, 0, exportRoot.HG.HG_blau.width, exportRoot.HG.HG_blau.height);
+        }
+        if (exportRoot.sym_Bereich) {
+            if (exportRoot.sym_Bereich.b_l_b) exportRoot.sym_Bereich.b_l_b.cache(0, 0, exportRoot.sym_Bereich.b_l_b.width, exportRoot.sym_Bereich.b_l_b.height);
+            if (exportRoot.sym_Bereich.b_l_w) exportRoot.sym_Bereich.b_l_w.cache(0, 0, exportRoot.sym_Bereich.b_l_w.width, exportRoot.sym_Bereich.b_l_w.height);
+            if (exportRoot.sym_Bereich.b_r_b) exportRoot.sym_Bereich.b_r_b.cache(0, 0, exportRoot.sym_Bereich.b_r_b.width, exportRoot.sym_Bereich.b_r_b.height);
+            if (exportRoot.sym_Bereich.b_r_w) exportRoot.sym_Bereich.b_r_w.cache(0, 0, exportRoot.sym_Bereich.b_r_w.width, exportRoot.sym_Bereich.b_r_w.height);
+        }
+
+        // ========== Responsive Scaling ==========
+        AdobeAn.makeResponsive(true, 'both', false, 1, [canvas, anim_container, dom_overlay_container]);
+        AdobeAn.compositionLoaded(lib.properties.id);
+    });
+    loader.loadManifest(lib.properties.manifest);
 }
+
 function handleFileLoad(evt, comp) {
-	var images=comp.getImages();	
-	if (evt && (evt.item.type == "image")) { images[evt.item.id] = evt.result; }	
+    var images = comp.getImages();
+    if (evt && (evt.item.type == "image")) { images[evt.item.id] = evt.result; }
 }
-function handleComplete(evt,comp) {
-	//This function is always called, irrespective of the content. You can use the variable "stage" after it is created in token create_stage.
-	var lib=comp.getLibrary();
-	var ss=comp.getSpriteSheet();
-	var queue = evt.target;
-	var ssMetadata = lib.ssMetadata;
-	for(i=0; i<ssMetadata.length; i++) {
-		ss[ssMetadata[i].name] = new createjs.SpriteSheet( {"images": [queue.getResult(ssMetadata[i].name)], "frames": ssMetadata[i].frames} )
-	}
-	exportRoot = new lib.RECOVER_WIEDERHERGESTELLT_NU();
-	stage = new lib.Stage(canvas);	
-	//Registers the "tick" event listener.
-	fnStartAnimation = function() {
-		stage.addChild(exportRoot);
-		createjs.Ticker.framerate = lib.properties.fps;
-		createjs.Ticker.addEventListener("tick", stage);
-	}	    
-	//Code to support hidpi screens and responsive scaling.
-	AdobeAn.makeResponsive(true,'both',false,1,[canvas,anim_container,dom_overlay_container]);	
-	AdobeAn.compositionLoaded(lib.properties.id);
-	fnStartAnimation();
+
+function handleComplete(evt, comp) {
+    // Diese Funktion bleibt leer, da wir alles in handleComplete des Loaders erledigen
 }
 </script>
-<!-- write your code here -->
 </head>
 <body onload="init();" style="margin:0px;">
-	<div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:1920px; height:1080px">
-		<canvas id="canvas" width="1920" height="1080" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
-		<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1920px; height:1080px; position: absolute; left: 0px; top: 0px; display: block;">
-		</div>
-	</div>
+    <div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:1920px; height:1080px">
+        <canvas id="canvas" width="1920" height="1080" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
+        <div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1920px; height:1080px; position: absolute; left: 0px; top: 0px; display: block;">
+        </div>
+    </div>
 </body>
 </html>
