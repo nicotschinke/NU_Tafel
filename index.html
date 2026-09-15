@@ -6,65 +6,77 @@
     <title>NU</title>
     <!-- $EMBED_IMAGES -->
     <!-- $EMBED_LABELS -->
+
+    <!-- BEIDE Skripte mit defer laden, um die Reihenfolge zu gewährleisten -->
     <script src="https://code.createjs.com/1.0.0/createjs.min.js" defer></script>
     <script src="NU.js" defer></script>
+
     <script>
-    var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
+        var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
 
-    function init() {
-        canvas = document.getElementById("canvas");
-        anim_container = document.getElementById("animation_container");
-        dom_overlay_container = document.getElementById("dom_overlay_container");
-        var comp = AdobeAn.getComposition("9A27D9E747957B46937F8511DE0476E9");
-        var lib = comp.getLibrary();
-
-        var loader = new createjs.LoadQueue(false);
-        loader.addEventListener("fileload", function(evt) { handleFileLoad(evt, comp); });
-        loader.addEventListener("complete", function(evt) { handleComplete(evt, comp); });
-        loader.loadManifest(lib.properties.manifest);
-    }
-
-    function handleFileLoad(evt, comp) {
-        var images = comp.getImages();
-        if (evt && (evt.item.type == "image")) { images[evt.item.id] = evt.result; }
-    }
-
-    function handleComplete(evt, comp) {
-        var lib = comp.getLibrary();
-        var ss = comp.getSpriteSheet();
-        var queue = evt.target;
-        var ssMetadata = lib.ssMetadata;
-
-        for (i = 0; i < ssMetadata.length; i++) {
-            ss[ssMetadata[i].name] = new createjs.SpriteSheet({
-                "images": [queue.getResult(ssMetadata[i].name)],
-                "frames": ssMetadata[i].frames
-            });
-        }
-
-        exportRoot = new lib.RECOVER_WIEDERHERGESTELLT_NU();
-        stage = new lib.Stage(canvas);
-
-        // Standard-Animate-Code für Responsive Scaling
-        AdobeAn.makeResponsive(true, 'both', false, 1, [canvas, anim_container, dom_overlay_container]);
-        AdobeAn.compositionLoaded(lib.properties.id);
-
-        // ========== WICHTIG: Hier Ihren Code aus NU.js aufrufen ==========
+        // Warten, bis das DOM und alle Skripte geladen sind
         window.onload = function() {
             // Prüfen, ob AdobeAn verfügbar ist
-            if (window.AdobeAn) {
-                init();
-            } else {
-                // Falls nicht, kurz warten und erneut prüfen
-                setTimeout(function() {
-                    if (window.AdobeAn) init();
-                }, 100);
+            if (!window.AdobeAn) {
+                setTimeout(arguments.callee, 100); // Warte 100ms und versuche es erneut
+                return;
             }
+
+            init();
         };
-        </script>
-   </head>
+
+        function init() {
+            canvas = document.getElementById("canvas");
+            anim_container = document.getElementById("animation_container");
+            dom_overlay_container = document.getElementById("dom_overlay_container");
+
+            var comp = AdobeAn.getComposition("9A27D9E747957B46937F8511DE0476E9");
+            var lib = comp.getLibrary();
+
+            var loader = new createjs.LoadQueue(false);
+            loader.addEventListener("fileload", handleFileLoad);
+            loader.addEventListener("complete", handleComplete);
+            loader.loadManifest(lib.properties.manifest);
+        }
+
+        function handleFileLoad(evt) {
+            var images = AdobeAn.getImages();
+            if (evt && (evt.item.type == "image")) {
+                images[evt.item.id] = evt.result;
+            }
+        }
+
+        function handleComplete(evt) {
+            var comp = AdobeAn.getComposition("9A27D9E747957B46937F8511DE0476E9");
+            var lib = comp.getLibrary();
+            var ss = comp.getSpriteSheet();
+            var queue = evt.target;
+            var ssMetadata = lib.ssMetadata;
+
+            for (var i = 0; i < ssMetadata.length; i++) {
+                ss[ssMetadata[i].name] = new createjs.SpriteSheet({
+                    "images": [queue.getResult(ssMetadata[i].name)],
+                    "frames": ssMetadata[i].frames
+                });
+            }
+
+            exportRoot = new lib.RECOVER_WIEDERHERGESTELLT_NU();
+            stage = new lib.Stage(canvas);
+
+            // Standard-Animate-Code für Responsive Scaling
+            AdobeAn.makeResponsive(true, 'both', false, 1, [canvas, anim_container, dom_overlay_container]);
+            AdobeAn.compositionLoaded(lib.properties.id);
+
+            // Ihren Code aus NU.js aufrufen
+            window.root = exportRoot;
+            if (window.initNUCode) {
+                initNUCode();
+            }
+        }
+    </script>
+</head>
 <body style="margin:0px;">
-    <div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:1920px; height:1080px">
+    <div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:1920px; height:1080px;">
         <canvas id="canvas" width="1920" height="1080" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
         <div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1920px; height:1080px; position: absolute; left: 0px; top: 0px; display: block;"></div>
     </div>
