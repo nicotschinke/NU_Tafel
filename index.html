@@ -9,7 +9,7 @@
     <script src="https://code.createjs.com/1.0.0/createjs.min.js" defer></script>
     <script src="NU.js" defer></script>
     <script>
-        var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
+        var canvas, stage, exportRoot, anim_container, dom_overlay_container;
 
         window.onload = function() {
             if (!window.AdobeAn) {
@@ -56,26 +56,34 @@
 
             exportRoot = new lib.RECOVER_WIEDERHERGESTELLT_NU();
             stage = new lib.Stage(canvas);
-            stage.addChild(exportRoot); // WICHTIG: exportRoot zur Stage hinzufügen!
+            stage.addChild(exportRoot); // WICHTIG: exportRoot zur Stage hinzufügen
 
-            // Standard-Animate-Code für Responsive Scaling
+            // Debugging: Prüfen, ob exportRoot Inhalte hat
+            console.log("exportRoot:", exportRoot);
+            console.log("exportRoot.HG:", exportRoot.HG);
+            console.log("exportRoot.HG.HG_weiß:", exportRoot.HG?.HG_weiß);
+
+            // Standard-Animate-Code
             AdobeAn.makeResponsive(true, 'both', false, 1, [canvas, anim_container, dom_overlay_container]);
             AdobeAn.compositionLoaded(lib.properties.id);
 
+            // WICHTIG: Ticker starten
+            createjs.Ticker.framerate = 60;
+            createjs.Ticker.addEventListener("tick", stage);
+
+            // Stage aktualisieren
+            stage.update();
+
             // Ihren Code aus NU.js aufrufen
             window.root = exportRoot;
-            if (window.initNUCode) {
-                initNUCode();
-            }
-
-            stage.update(); // WICHTIG: Stage aktualisieren!
+            if (window.initNUCode) initNUCode();
         }
     </script>
 </head>
 <body style="margin:0px;">
-    <div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:1920px; height:1080px;">
-        <canvas id="canvas" width="1920" height="1080" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
-        <div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1920px; height:1080px; position: absolute; left: 0px; top: 0px; display: block;"></div>
+    <div id="animation_container" style="width:1920px; height:1080px;">
+        <canvas id="canvas" width="1920" height="1080" style="position: absolute; display: block;"></canvas>
+        <div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1920px; height:1080px; position: absolute;"></div>
     </div>
 </body>
 </html>
