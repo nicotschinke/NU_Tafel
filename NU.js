@@ -1,3 +1,25 @@
+// ========== 1. Throttle-Funktion (für Performance-Optimierung) ==========
+function throttle(func, limit) {
+    var lastFunc;
+    var lastRan;
+    return function() {
+        var context = this;
+        var args = arguments;
+        if (!lastRan) {
+            func.apply(context, args);
+            lastRan = Date.now();
+        } else {
+            clearTimeout(lastFunc);
+            lastFunc = setTimeout(function() {
+                if ((Date.now() - lastRan) >= limit) {
+                    func.apply(context, args);
+                    lastRan = Date.now();
+                }
+            }, limit - (Date.now() - lastRan));
+        }
+    };
+}
+
 (function (cjs, an) {
 
 var p; // shortcut to reference prototypes
