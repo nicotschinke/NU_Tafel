@@ -27745,7 +27745,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/NU_atlas_1.png", id:"NU_atlas_1"}
+		{src:"images/NU_atlas_1.webp", id:"NU_atlas_1"}
 	],
 	preloads: []
 };
