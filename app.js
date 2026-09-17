@@ -21,6 +21,8 @@ window.onload = function() {
 
     // Fehlerbehandlung für das Sprite-Sheet
     spriteSheet.onerror = function() {
+        console.error("❌ Fehler: Sprite-Sheet konnte nicht geladen werden!");
+        console.error("Gesuchter Pfad:", spriteSheet.src);
         document.getElementById('error').textContent = "Fehler: Sprite-Sheet konnte nicht geladen werden!";
         document.getElementById('error').style.display = 'block';
     };
@@ -32,13 +34,6 @@ window.onload = function() {
         drawAll(ctx, spriteSheet);
     };
 
-
-    spriteSheet.onerror = function() {
-        console.error("❌ Fehler: Sprite-Sheet konnte nicht geladen werden!");
-        console.error("Gesuchter Pfad:", spriteSheet.src);
-        document.getElementById('error').textContent = "Fehler: Sprite-Sheet nicht gefunden!";
-        document.getElementById('error').style.display = 'block';
-    };
     
     // Funktion zum Zeichnen aller Elemente
     function drawAll(ctx, spriteSheet) {
