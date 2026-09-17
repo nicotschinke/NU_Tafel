@@ -27,9 +27,19 @@ window.onload = function() {
 
     // Wenn das Sprite-Sheet geladen ist, zeichnen
     spriteSheet.onload = function() {
+        console.log("✅ Sprite-Sheet geladen:", spriteSheet.src);
+        console.log("Sprite-Sheet Abmessungen:", spriteSheet.width, "x", spriteSheet.height);
         drawAll(ctx, spriteSheet);
     };
 
+
+    spriteSheet.onerror = function() {
+        console.error("❌ Fehler: Sprite-Sheet konnte nicht geladen werden!");
+        console.error("Gesuchter Pfad:", spriteSheet.src);
+        document.getElementById('error').textContent = "Fehler: Sprite-Sheet nicht gefunden!";
+        document.getElementById('error').style.display = 'block';
+    };
+    
     // Funktion zum Zeichnen aller Elemente
     function drawAll(ctx, spriteSheet) {
         // Canvas leeren
