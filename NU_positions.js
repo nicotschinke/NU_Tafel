@@ -264,7 +264,7 @@ const spriteSheet = {
     101
   ]
 ],
-    image: "/NU_atlas_1.webp"
+    image: "NU_atlas_1.png"
 };
 
 // ========== Export für andere Skripte ==========
