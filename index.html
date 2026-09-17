@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NU Tafel</title>
+    <style>
+        /* Grundlegende Stile für die Anwendung */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Canvas-Stile: Füllt den gesamten Bildschirm */
+        #canvas {
+            display: block;
+            width: 1920px;
+            height: 1080px;
+            background-color: white;
+            margin: 0 auto;
+        }
+
+        /* Optional: Ladebalken oder Fehlerhinweise */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: #333;
+        }
+
+        .error {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <!-- Canvas-Element für die Grafikausgabe -->
+    <canvas id="canvas" width="1920" height="1080"></canvas>
+
+    <!-- Ladehinweis (optional) -->
+    <div id="loading" class="loading">Lade Sprite-Sheet...</div>
+    <div id="error" class="error" style="display: none;"></div>
+
+    <!-- Laden Sie die NU_positions.js und app.js -->
+    <script src="NU_positions.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
