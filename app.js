@@ -36,28 +36,28 @@ window.onload = function() {
 
     
     // Funktion zum Zeichnen aller Elemente
-    function drawAll(ctx, spriteSheet) {
-        // Canvas leeren
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    function drawAll() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Alle Elemente durchgehen und zeichnen
-        for (const name in window.elements) {
-            const elem = window.elements[name];
+    for (const name in window.elements) {
+        const elem = window.elements[name];
 
-            // Prüfen, ob das Element sichtbar ist (falls 'visible' definiert ist)
-            if (elem.visible === false) continue;
-
-            // Frame-Daten aus dem Sprite-Sheet holen
+        // Prüfen, ob der Frame-Index gültig ist
+        if (elem.frame >= 0 && elem.frame < window.spriteSheet.frames.length) {
             const frame = window.spriteSheet.frames[elem.frame];
+            console.log(`Zeichne Element: ${name} (Frame: ${elem.frame}, x: ${elem.x}, y: ${elem.y})`);
 
-            // Element zeichnen
+            // Zeichnen Sie das Element
             ctx.drawImage(
                 spriteSheet,
-                frame[0], frame[1], frame[2], frame[3], // Quelle: [sx, sy, width, height]
-                elem.x, elem.y, elem.width, elem.height    // Ziel: [x, y, width, height]
+                frame[0], frame[1], frame[2], frame[3], // Quelle (x, y, width, height im Sprite-Sheet)
+                elem.x, elem.y, elem.width, elem.height     // Ziel (x, y, width, height auf dem Canvas)
             );
+        } else {
+            console.warn(`Frame-Index ${elem.frame} für Element ${name} ist ungültig!`);
         }
     }
+}
 
     // Klick-Handler für interaktive Elemente
     canvas.addEventListener('click', function(e) {
