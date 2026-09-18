@@ -32,6 +32,8 @@ window.onload = function() {
         console.log("✅ Sprite-Sheet geladen:", spriteSheet.src);
         console.log("Sprite-Sheet Abmessungen:", spriteSheet.width, "x", spriteSheet.height);
         drawAll(ctx, spriteSheet);
+
+        console.log("Anzahl der Frames:", window.spriteSheet.frames.length);
     };
 
     
