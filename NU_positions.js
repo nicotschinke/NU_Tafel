@@ -25595,7 +25595,7 @@ const spriteSheet = {
     101
   ]
 ],
-    image: "/NU_atlas_1.png"
+    image: "NU_atlas_1.png"
 };
 
 // ========== Export für andere Skripte ==========
