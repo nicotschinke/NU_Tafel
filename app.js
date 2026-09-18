@@ -36,26 +36,23 @@ window.onload = function() {
 
     
     // Funktion zum Zeichnen aller Elemente
-    function drawAll() {
+function drawAll() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     for (const name in window.elements) {
         const elem = window.elements[name];
 
-        // Prüfen, ob der Frame-Index gültig ist
-        if (elem.frame >= 0 && elem.frame < window.spriteSheet.frames.length) {
-            const frame = window.spriteSheet.frames[elem.frame];
-            console.log(`Zeichne Element: ${name} (Frame: ${elem.frame}, x: ${elem.x}, y: ${elem.y})`);
+        // Verwenden Sie immer Frame 0 (falls Frame-Indizes nicht korrekt sind)
+        const frame = window.spriteSheet.frames[0]; // Immer der erste Frame
 
-            // Zeichnen Sie das Element
-            ctx.drawImage(
-                spriteSheet,
-                frame[0], frame[1], frame[2], frame[3], // Quelle (x, y, width, height im Sprite-Sheet)
-                elem.x, elem.y, elem.width, elem.height     // Ziel (x, y, width, height auf dem Canvas)
-            );
-        } else {
-            console.warn(`Frame-Index ${elem.frame} für Element ${name} ist ungültig!`);
-        }
+        console.log(`Zeichne Element: ${name} (Frame: 0, x: ${elem.x}, y: ${elem.y})`);
+
+        // Zeichnen Sie das Element mit Frame 0
+        ctx.drawImage(
+            spriteSheet,
+            frame[0], frame[1], frame[2], frame[3], // Quelle (x, y, width, height im Sprite-Sheet)
+            elem.x, elem.y, elem.width, elem.height     // Ziel (x, y, width, height auf dem Canvas)
+        );
     }
 }
 
